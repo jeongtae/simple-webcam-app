@@ -38,11 +38,20 @@
       })
       .then(setVideoSource)
   })
+
+  let isFlipped = $state(false)
+  let rotation = $state(0)
 </script>
 
 <main>
-  <video bind:this={video} muted autoplay></video>
-  <div>
+  <video
+    bind:this={video}
+    muted
+    autoplay
+    style:transform={`rotate(${rotation}deg) scaleX(${isFlipped ? -1 : 1})`}
+  ></video>
+
+  <div class="controls">
     <select bind:value={selectedDevice}>
       <option value={null}>(Not Selected)</option>
       {#each cameraDevices as device}
@@ -51,6 +60,32 @@
         </option>
       {/each}
     </select>
+
+    <div>
+      <label>
+        <input type="checkbox" bind:checked={isFlipped} />
+        Flip
+      </label>
+    </div>
+
+    <div>
+      <label>
+        <input type="radio" bind:group={rotation} value={0} />
+        0°
+      </label>
+      <label>
+        <input type="radio" bind:group={rotation} value={90} />
+        90°
+      </label>
+      <label>
+        <input type="radio" bind:group={rotation} value={180} />
+        180°
+      </label>
+      <label>
+        <input type="radio" bind:group={rotation} value={270} />
+        270°
+      </label>
+    </div>
   </div>
 </main>
 
@@ -60,7 +95,20 @@
     inset: 0;
     width: 100dvw;
     height: 100dvh;
-    transform: rotate(180deg) scaleX(-1);
     pointer-events: none;
+  }
+
+  .controls {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    gap: 1.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    width: fit-content;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    color: white;
   }
 </style>
