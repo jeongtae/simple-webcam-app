@@ -121,5 +121,11 @@
     padding: 0.5rem;
     border-radius: 0.5rem;
     color: white;
+
+    select {
+      width: 150px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 </style>
