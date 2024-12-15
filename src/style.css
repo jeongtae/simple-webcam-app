@@ -8,4 +8,5 @@ video {
   inset: 0;
   width: 100dvw;
   height: 100dvh;
+  transform: rotate(180deg) scaleX(-1);
 }
