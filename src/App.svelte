@@ -59,7 +59,7 @@
       <option value={null}>(Not Selected)</option>
       {#each cameraDevices as device}
         <option value={device}>
-          {device.label}
+          {device.label || '(Unknown)'}
         </option>
       {/each}
     </select>
