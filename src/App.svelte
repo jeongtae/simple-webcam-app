@@ -39,6 +39,7 @@
       .then(setVideoSource)
   })
 
+  let isZoomToCover = $state(false)
   let isFlipped = $state(false)
   let rotation = $state(0)
 </script>
@@ -48,6 +49,7 @@
     bind:this={video}
     muted
     autoplay
+    style:object-fit={isZoomToCover ? 'cover' : 'contain'}
     style:transform={`rotate(${rotation}deg) scaleX(${isFlipped ? -1 : 1})`}
   ></video>
 
@@ -60,6 +62,13 @@
         </option>
       {/each}
     </select>
+
+    <div>
+      <label>
+        <input type="checkbox" bind:checked={isZoomToCover} />
+        Zoom to cover
+      </label>
+    </div>
 
     <div>
       <label>
