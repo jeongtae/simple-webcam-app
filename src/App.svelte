@@ -2,28 +2,56 @@
   /** @type {HTMLVideoElement} */
   let video
 
-  $effect(() => {
-    video
-    ;(async () => {
-      const devices = await navigator.mediaDevices.enumerateDevices()
-      const device = devices.find(
-        ({ label }) => label.includes('iPhone') && label.includes('카메라')
-      )
+  /** @type {MediaDeviceInfo[]} */
+  let devices = $state([])
+  navigator.mediaDevices.enumerateDevices().then((enumeratedDevices) => {
+    devices = enumeratedDevices
+  })
 
-      const stream = await navigator.mediaDevices.getUserMedia({
+  let cameraDevices = $derived(devices.filter(({ kind }) => kind === 'videoinput'))
+
+  /** @type {MediaDeviceInfo | null} */
+  let selectedDevice = $state(null)
+
+  function setVideoSource(source) {
+    video.srcObject = source
+  }
+
+  function unsetVideoSource() {
+    video.srcObject?.getTracks().forEach((track) => track.stop())
+    video.srcObject = null
+  }
+
+  $effect(() => {
+    if (!selectedDevice) {
+      unsetVideoSource()
+      return
+    }
+
+    unsetVideoSource()
+    navigator.mediaDevices
+      .getUserMedia({
         audio: false,
         video: {
-          deviceId: device?.deviceId,
+          deviceId: selectedDevice.deviceId,
         },
       })
-
-      video.srcObject = stream
-    })()
+      .then(setVideoSource)
   })
 </script>
 
 <main>
   <video bind:this={video} muted autoplay></video>
+  <div>
+    <select bind:value={selectedDevice}>
+      <option value={null}>(Not Selected)</option>
+      {#each cameraDevices as device}
+        <option value={device}>
+          {device.label}
+        </option>
+      {/each}
+    </select>
+  </div>
 </main>
 
 <style>
@@ -33,5 +61,6 @@
     width: 100dvw;
     height: 100dvh;
     transform: rotate(180deg) scaleX(-1);
+    pointer-events: none;
   }
 </style>
