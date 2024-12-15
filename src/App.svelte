@@ -49,6 +49,7 @@
     bind:this={video}
     muted
     autoplay
+    playsinline
     style:object-fit={isZoomToCover ? 'cover' : 'contain'}
     style:transform={`rotate(${rotation}deg) scaleX(${isFlipped ? -1 : 1})`}
   ></video>
