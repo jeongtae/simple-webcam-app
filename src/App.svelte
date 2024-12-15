@@ -113,6 +113,7 @@
     top: 0;
     left: 0;
     display: flex;
+    flex-wrap: wrap;
     gap: 1.5rem;
     background: rgba(0, 0, 0, 0.5);
     width: fit-content;
