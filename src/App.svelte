@@ -23,11 +23,11 @@
 </script>
 
 <main>
-  <video bind:this={video} class="video" muted autoplay></video>
+  <video bind:this={video} muted autoplay></video>
 </main>
 
 <style>
-  .video {
+  video {
     position: fixed;
     inset: 0;
     width: 100dvw;
