@@ -121,6 +121,7 @@
     padding: 0.5rem;
     border-radius: 0.5rem;
     color: white;
+    align-items: baseline;
 
     select {
       width: 150px;
