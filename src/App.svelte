@@ -43,7 +43,7 @@
 
   let isZoomToCover = $state(false)
   let isFlipped = $state(false)
-  let rotation = $state(0)
+  let isRotated = $state(false)
 </script>
 
 <main>
@@ -54,7 +54,7 @@
     playsinline
     use:transform={{
       flip: () => isFlipped,
-      rotation: () => rotation,
+      rotate: () => isRotated,
       zoomToCover: () => isZoomToCover,
     }}
   ></video>
@@ -85,20 +85,8 @@
 
     <div>
       <label>
-        <input type="radio" bind:group={rotation} value={0} />
-        0°
-      </label>
-      <label>
-        <input type="radio" bind:group={rotation} value={90} />
-        90°
-      </label>
-      <label>
-        <input type="radio" bind:group={rotation} value={180} />
-        180°
-      </label>
-      <label>
-        <input type="radio" bind:group={rotation} value={270} />
-        270°
+        <input type="checkbox" bind:checked={isRotated} />
+        Rotate
       </label>
     </div>
   </div>
