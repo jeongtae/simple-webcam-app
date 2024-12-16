@@ -1,4 +1,6 @@
 <script>
+  import { transform } from './actions/transform.svelte'
+
   /** @type {HTMLVideoElement} */
   let video
 
@@ -50,8 +52,11 @@
     muted
     autoplay
     playsinline
-    style:object-fit={isZoomToCover ? 'cover' : 'contain'}
-    style:transform={`rotate(${rotation}deg) scaleX(${isFlipped ? -1 : 1})`}
+    use:transform={{
+      flip: () => isFlipped,
+      rotation: () => rotation,
+      zoomToCover: () => isZoomToCover,
+    }}
   ></video>
 
   <div class="controls">
