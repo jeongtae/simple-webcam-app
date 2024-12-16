@@ -1,43 +1,10 @@
 <script>
-  import { transform } from './actions/transform.svelte'
+  import CameraPreview from './components/CameraPreview.svelte'
   import CameraSelect from './components/CameraSelect.svelte'
   import TransformControls from './components/TransformControls.svelte'
 
-  /** @type {HTMLVideoElement} */
-  let video
-
   /** @type {MediaDeviceInfo | null} */
-  let selectedCamera = $state(null)
-
-  function setVideoSource(source) {
-    video.srcObject = source
-  }
-
-  function unsetVideoSource() {
-    video.srcObject?.getTracks().forEach((track) => track.stop())
-    video.srcObject = null
-  }
-
-  $effect(() => {
-    if (!selectedCamera) {
-      unsetVideoSource()
-      return
-    }
-
-    unsetVideoSource()
-    navigator.mediaDevices
-      .getUserMedia({
-        audio: false,
-        video: {
-          deviceId: selectedCamera.deviceId,
-        },
-      })
-      .then(setVideoSource)
-
-    return () => {
-      unsetVideoSource()
-    }
-  })
+  let camera = $state(null)
 
   let cover = $state(false)
   let flip = $state(false)
@@ -45,29 +12,14 @@
 </script>
 
 <main>
-  <video
-    bind:this={video}
-    muted
-    autoplay
-    playsinline
-    use:transform={() => ({ flip, rotate, cover })}
-  ></video>
-
+  <CameraPreview {camera} {cover} {flip} {rotate} />
   <div class="controls">
-    <CameraSelect bind:value={selectedCamera} />
+    <CameraSelect bind:value={camera} />
     <TransformControls bind:cover bind:flip bind:rotate />
   </div>
 </main>
 
 <style>
-  video {
-    position: fixed;
-    inset: 0;
-    width: 100dvw;
-    height: 100dvh;
-    pointer-events: none;
-  }
-
   .controls {
     position: fixed;
     top: 0.5rem;
