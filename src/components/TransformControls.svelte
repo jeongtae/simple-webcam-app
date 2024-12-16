@@ -1,24 +1,41 @@
 <script>
   let { cover = $bindable(false), flip = $bindable(false), rotate = $bindable(false) } = $props()
+
+  function handleKeydown(e) {
+    if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) {
+      return
+    }
+    if (e.key === 'c') {
+      cover = !cover
+    }
+    if (e.key === 'f') {
+      flip = !flip
+    }
+    if (e.key === 'r') {
+      rotate = !rotate
+    }
+  }
 </script>
 
+<svelte:window onkeydown={handleKeydown} />
+
 <div>
-  <label>
+  <label aria-label="Cover">
     <input type="checkbox" bind:checked={cover} />
-    Cover
+    [C]over
   </label>
 </div>
 
 <div>
-  <label>
+  <label aria-label="Flip">
     <input type="checkbox" bind:checked={flip} />
-    Flip
+    [F]lip
   </label>
 </div>
 
 <div>
-  <label>
+  <label aria-label="Rotate">
     <input type="checkbox" bind:checked={rotate} />
-    Rotate
+    [R]otate
   </label>
 </div>
