@@ -39,6 +39,10 @@
         },
       })
       .then(setVideoSource)
+
+    return () => {
+      unsetVideoSource()
+    }
   })
 
   let isZoomToCover = $state(false)
