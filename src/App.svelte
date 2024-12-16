@@ -58,11 +58,7 @@
     muted
     autoplay
     playsinline
-    use:transform={{
-      flip: () => flip,
-      rotate: () => rotate,
-      cover: () => cover,
-    }}
+    use:transform={() => ({ flip, rotate, cover })}
   ></video>
 
   <div class="controls">
