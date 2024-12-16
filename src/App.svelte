@@ -1,5 +1,7 @@
 <script>
   import { transform } from './actions/transform.svelte'
+  import CameraSelect from './components/CameraSelect.svelte'
+  import TransformControls from './components/TransformControls.svelte'
 
   /** @type {HTMLVideoElement} */
   let video
@@ -13,7 +15,7 @@
   let cameraDevices = $derived(devices.filter(({ kind }) => kind === 'videoinput'))
 
   /** @type {MediaDeviceInfo | null} */
-  let selectedDevice = $state(null)
+  let selectedCamera = $state(null)
 
   function setVideoSource(source) {
     video.srcObject = source
@@ -25,7 +27,7 @@
   }
 
   $effect(() => {
-    if (!selectedDevice) {
+    if (!selectedCamera) {
       unsetVideoSource()
       return
     }
@@ -35,7 +37,7 @@
       .getUserMedia({
         audio: false,
         video: {
-          deviceId: selectedDevice.deviceId,
+          deviceId: selectedCamera.deviceId,
         },
       })
       .then(setVideoSource)
@@ -45,9 +47,9 @@
     }
   })
 
-  let isZoomToCover = $state(false)
-  let isFlipped = $state(false)
-  let isRotated = $state(false)
+  let cover = $state(false)
+  let flip = $state(false)
+  let rotate = $state(false)
 </script>
 
 <main>
@@ -57,42 +59,15 @@
     autoplay
     playsinline
     use:transform={{
-      flip: () => isFlipped,
-      rotate: () => isRotated,
-      zoomToCover: () => isZoomToCover,
+      flip: () => flip,
+      rotate: () => rotate,
+      zoomToCover: () => cover,
     }}
   ></video>
 
   <div class="controls">
-    <select bind:value={selectedDevice}>
-      <option value={null}>(Not Selected)</option>
-      {#each cameraDevices as device}
-        <option value={device}>
-          {device.label || '(Unknown)'}
-        </option>
-      {/each}
-    </select>
-
-    <div>
-      <label>
-        <input type="checkbox" bind:checked={isZoomToCover} />
-        Zoom to cover
-      </label>
-    </div>
-
-    <div>
-      <label>
-        <input type="checkbox" bind:checked={isFlipped} />
-        Flip
-      </label>
-    </div>
-
-    <div>
-      <label>
-        <input type="checkbox" bind:checked={isRotated} />
-        Rotate
-      </label>
-    </div>
+    <CameraSelect bind:value={selectedCamera} cameras={cameraDevices} />
+    <TransformControls bind:cover bind:flip bind:rotate />
   </div>
 </main>
 
@@ -119,11 +94,5 @@
     border-radius: 0.5rem;
     color: white;
     align-items: baseline;
-
-    select {
-      width: 150px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
   }
 </style>
