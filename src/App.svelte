@@ -61,7 +61,7 @@
     use:transform={{
       flip: () => flip,
       rotate: () => rotate,
-      zoomToCover: () => cover,
+      cover: () => cover,
     }}
   ></video>
 
