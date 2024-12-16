@@ -6,14 +6,6 @@
   /** @type {HTMLVideoElement} */
   let video
 
-  /** @type {MediaDeviceInfo[]} */
-  let devices = $state([])
-  navigator.mediaDevices.enumerateDevices().then((enumeratedDevices) => {
-    devices = enumeratedDevices
-  })
-
-  let cameraDevices = $derived(devices.filter(({ kind }) => kind === 'videoinput'))
-
   /** @type {MediaDeviceInfo | null} */
   let selectedCamera = $state(null)
 
@@ -62,7 +54,7 @@
   ></video>
 
   <div class="controls">
-    <CameraSelect bind:value={selectedCamera} cameras={cameraDevices} />
+    <CameraSelect bind:value={selectedCamera} />
     <TransformControls bind:cover bind:flip bind:rotate />
   </div>
 </main>
